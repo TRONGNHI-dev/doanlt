@@ -39,10 +39,21 @@
                     <li class="nav-item"><a href="/Hotel" class="nav-link">Hotel</a></li>
                     <li class="nav-item"><a href="/Blog" class="nav-link">Blog</a></li>
                     <li class="nav-item"><a href="/Contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item d-lg-none">
+                        <a href="/Users/Login" class="nav-link">Dang nhap</a>
+                    </li>
                 </ul>
+            </div>
+            <div class="nav-login-wrap d-none d-lg-block">
+                <a href="/Users/Login" class="nav-login-btn">Dang nhap</a>
             </div>
         </div>
     </nav>
+
+    @if (Context.Request.Path == "/")
+    {
+        <a href="/Users/Login" class="floating-login-btn">Dang nhap</a>
+    }
 
     @RenderBody()
 
@@ -62,5 +73,59 @@
     <script src="~/js/main.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <style>
+        .nav-login-wrap {
+            margin-left: 18px;
+        }
+
+        .nav-login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff !important;
+            background: #0f766e;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-weight: 600;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .nav-login-btn:hover {
+            background: #115e59;
+            color: #fff !important;
+        }
+
+        .floating-login-btn {
+            position: fixed;
+            top: 92px;
+            right: 32px;
+            z-index: 1200;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ff7a18, #ff5722);
+            color: #fff !important;
+            font-weight: 700;
+            box-shadow: 0 16px 32px rgba(255, 87, 34, 0.28);
+        }
+
+        .floating-login-btn:hover {
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+
+        @@media (max-width: 991.98px) {
+            .floating-login-btn {
+                top: 84px;
+                right: 16px;
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </body>
 </html>

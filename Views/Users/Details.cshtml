@@ -1,0 +1,208 @@
+@model TravelProject.Models.User
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<style>
+    .user-details-page {
+        padding: 24px 0 40px;
+    }
+
+    .user-details-hero {
+        background: linear-gradient(135deg, #fff6ef 0%, #ffffff 55%, #eef4ff 100%);
+        border: 1px solid #f0e4d7;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        margin-bottom: 24px;
+    }
+
+    .user-details-badge {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 122, 61, 0.12);
+        color: #d75a1a;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .user-details-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .user-details-subtitle {
+        margin: 12px 0 0;
+        color: #5f6b85;
+        font-size: 16px;
+    }
+
+    .user-details-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+
+    .user-details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0;
+    }
+
+    .user-details-item {
+        padding: 24px 28px;
+        border-bottom: 1px solid #eef2f7;
+    }
+
+    .user-details-item:nth-child(odd) {
+        border-right: 1px solid #eef2f7;
+    }
+
+    .user-details-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #7b879d;
+    }
+
+    .user-details-value {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .user-details-value--soft {
+        font-size: 17px;
+        font-weight: 600;
+        color: #40506d;
+    }
+
+    .user-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .user-status--active {
+        background: #eaf9ef;
+        color: #208a4c;
+    }
+
+    .user-status--inactive {
+        background: #ffe7e5;
+        color: #c0392b;
+    }
+
+    .user-details-actions {
+        display: flex;
+        gap: 12px;
+        padding: 24px 28px;
+        flex-wrap: wrap;
+    }
+
+    .user-details-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+
+    .user-details-btn--primary {
+        background: linear-gradient(135deg, #ff7a3d 0%, #ff5c35 100%);
+        color: #fff;
+    }
+
+    .user-details-btn--secondary {
+        background: #15213b;
+        color: #fff;
+    }
+
+    @@media (max-width: 767.98px) {
+        .user-details-hero,
+        .user-details-item,
+        .user-details-actions {
+            padding: 20px;
+        }
+
+        .user-details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .user-details-item:nth-child(odd) {
+            border-right: none;
+        }
+    }
+</style>
+
+<section class="user-details-page">
+    <div class="user-details-hero">
+        <div class="user-details-badge">Pacific Travel Agency</div>
+        <h1 class="user-details-title">User Details</h1>
+        <p class="user-details-subtitle">Review the selected account information in the same visual style as the user list.</p>
+    </div>
+
+    <div class="user-details-card">
+        <div class="user-details-grid">
+            <div class="user-details-item">
+                <span class="user-details-label">Full Name</span>
+                <p class="user-details-value">@Model.FullName</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Username</span>
+                <p class="user-details-value user-details-value--soft">@Model.Username</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Email</span>
+                <p class="user-details-value user-details-value--soft">@Model.Email</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Phone Number</span>
+                <p class="user-details-value user-details-value--soft">@Model.PhoneNumber</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Role</span>
+                <p class="user-details-value user-details-value--soft">@Model.Role</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Created Date</span>
+                <p class="user-details-value user-details-value--soft">@Model.CreatedAt.ToString("dd/MM/yyyy")</p>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Status</span>
+                <span class="user-status @(Model.Status ? "user-status--active" : "user-status--inactive")">
+                    @(Model.Status ? "Active" : "Inactive")
+                </span>
+            </div>
+            <div class="user-details-item">
+                <span class="user-details-label">Password</span>
+                <p class="user-details-value user-details-value--soft">@Model.Password</p>
+            </div>
+        </div>
+
+        <div class="user-details-actions">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="user-details-btn user-details-btn--primary">Edit User</a>
+            <a asp-action="Index" class="user-details-btn user-details-btn--secondary">Back to List</a>
+        </div>
+    </div>
+</section>

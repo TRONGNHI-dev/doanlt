@@ -1,0 +1,125 @@
+@model TravelProject.Models.DiaDiem
+
+@{
+    ViewData["Title"] = "Destination Details";
+}
+
+<style>
+    .dd-details-page { padding: 24px 0 40px; }
+    .dd-details-hero {
+        background: linear-gradient(135deg, #fff6ef 0%, #ffffff 55%, #eef4ff 100%);
+        border: 1px solid #f0e4d7;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        margin-bottom: 24px;
+    }
+    .dd-badge {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 122, 61, 0.12);
+        color: #d75a1a;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+    .dd-title { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #172033; }
+    .dd-subtitle { margin: 12px 0 0; color: #5f6b85; font-size: 16px; }
+    .dd-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+    .dd-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dd-item { padding: 24px 28px; border-bottom: 1px solid #eef2f7; }
+    .dd-item:nth-child(odd) { border-right: 1px solid #eef2f7; }
+    .dd-item--full { grid-column: 1 / -1; }
+    .dd-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #7b879d; }
+    .dd-value { margin: 0; font-size: 18px; font-weight: 600; color: #172033; }
+    .dd-image {
+        width: 100%;
+        max-height: 320px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 1px solid #e8edf5;
+    }
+    .dd-actions { display: flex; gap: 12px; padding: 24px 28px; flex-wrap: wrap; }
+    .dd-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+    .dd-btn--primary { background: linear-gradient(135deg, #ff7a3d 0%, #ff5c35 100%); color: #fff; }
+    .dd-btn--secondary { background: #15213b; color: #fff; }
+    @@media (max-width: 767.98px) {
+        .dd-grid { grid-template-columns: 1fr; }
+        .dd-item:nth-child(odd) { border-right: none; }
+    }
+</style>
+
+<section class="dd-details-page">
+    <div class="dd-details-hero">
+        <div class="dd-badge">Pacific Travel Agency</div>
+        <h1 class="dd-title">Destination Details</h1>
+        <p class="dd-subtitle">Review the selected destination record and its content fields.</p>
+    </div>
+
+    <div class="dd-card">
+        <div class="dd-grid">
+            <div class="dd-item">
+                <span class="dd-label">Destination Name</span>
+                <p class="dd-value">@Model.TenDiaDiem</p>
+            </div>
+            <div class="dd-item">
+                <span class="dd-label">Region</span>
+                <p class="dd-value">@Model.KhuVuc</p>
+            </div>
+            <div class="dd-item">
+                <span class="dd-label">Category</span>
+                <p class="dd-value">@Model.LoaiHinh</p>
+            </div>
+            <div class="dd-item">
+                <span class="dd-label">Address</span>
+                <p class="dd-value">@Model.DiaChi</p>
+            </div>
+            <div class="dd-item">
+                <span class="dd-label">Views</span>
+                <p class="dd-value">@Model.LuotXem</p>
+            </div>
+            <div class="dd-item">
+                <span class="dd-label">Created Date</span>
+                <p class="dd-value">@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+            </div>
+            <div class="dd-item dd-item--full">
+                <span class="dd-label">Description</span>
+                <p class="dd-value">@Model.MoTa</p>
+            </div>
+            <div class="dd-item dd-item--full">
+                <span class="dd-label">Image</span>
+                @if (!string.IsNullOrWhiteSpace(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.TenDiaDiem" class="dd-image" />
+                }
+                else
+                {
+                    <p class="dd-value">No image provided.</p>
+                }
+            </div>
+        </div>
+        <div class="dd-actions">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="dd-btn dd-btn--primary">Edit Destination</a>
+            <a asp-action="Index" class="dd-btn dd-btn--secondary">Back to List</a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,411 @@
+@using System.Linq
+@model IEnumerable<TravelProject.Models.User>
+
+@{
+    ViewData["Title"] = "User Management";
+    var users = Model?.ToList() ?? new List<TravelProject.Models.User>();
+    var searchValue = ViewBag.SearchString as string;
+}
+
+<style>
+    .users-page {
+        position: relative;
+        z-index: 5;
+        padding: 24px 0 40px;
+    }
+
+    .users-hero {
+        position: relative;
+        z-index: 20;
+        isolation: isolate;
+        background: linear-gradient(135deg, #fff6ef 0%, #ffffff 55%, #eef4ff 100%);
+        border: 1px solid #f0e4d7;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        margin-bottom: 24px;
+    }
+
+    .users-hero__top {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+    .users-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 122, 61, 0.12);
+        color: #d75a1a;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .users-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: #172033;
+        line-height: 1.1;
+    }
+
+    .users-subtitle {
+        margin: 12px 0 0;
+        max-width: 640px;
+        color: #5f6b85;
+        font-size: 16px;
+    }
+
+    .users-create-btn {
+        position: relative;
+        z-index: 30;
+        pointer-events: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        border-radius: 16px;
+        padding: 14px 22px;
+        background: linear-gradient(135deg, #ff7a3d 0%, #ff5c35 100%);
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 14px 30px rgba(255, 92, 53, 0.25);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .users-create-btn:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 18px 34px rgba(255, 92, 53, 0.32);
+    }
+
+    .users-toolbar {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+    }
+
+    .users-search {
+        position: relative;
+    }
+
+    .users-search__icon {
+        position: absolute;
+        top: 50%;
+        left: 18px;
+        transform: translateY(-50%);
+        color: #90a0ba;
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .users-search__input {
+        width: 100%;
+        height: 56px;
+        border-radius: 18px;
+        border: 1px solid #dbe3f0;
+        padding: 0 18px 0 52px;
+        font-size: 16px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    .users-search__input:focus {
+        outline: none;
+        border-color: #ff7a3d;
+        box-shadow: 0 0 0 4px rgba(255, 122, 61, 0.12);
+    }
+
+    .users-search-btn {
+        min-width: 150px;
+        height: 56px;
+        border: none;
+        border-radius: 18px;
+        background: #15213b;
+        color: #fff;
+        font-weight: 700;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .users-search-btn:hover {
+        background: #0f172a;
+        transform: translateY(-1px);
+    }
+
+    .users-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+
+    .users-card__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        padding: 22px 24px;
+        border-bottom: 1px solid #eef2f7;
+        background: #ffffff;
+    }
+
+    .users-card__title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .users-card__meta {
+        margin: 4px 0 0;
+        color: #7b879d;
+        font-size: 14px;
+    }
+
+    .users-count {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: #f5f8fc;
+        color: #24324d;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .users-table {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    .users-table thead th {
+        padding: 18px 20px;
+        background: #f8fafc;
+        color: #24324d;
+        font-size: 14px;
+        font-weight: 800;
+        border-bottom: 1px solid #e8edf5;
+        white-space: nowrap;
+    }
+
+    .users-table tbody td {
+        padding: 18px 20px;
+        color: #3d4a63;
+        border-color: #eef2f7;
+    }
+
+    .users-table tbody tr:hover {
+        background: #fcfdff;
+    }
+
+    .users-name {
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .users-muted {
+        color: #7b879d;
+    }
+
+    .users-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .users-action-btn {
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+
+    .users-action-btn--info {
+        background: #eaf4ff;
+        color: #1d5fbf;
+    }
+
+    .users-action-btn--warning {
+        background: #fff5dd;
+        color: #9a6700;
+    }
+
+    .users-action-btn--danger {
+        background: #ffe7e5;
+        color: #c0392b;
+    }
+
+    .users-empty {
+        padding: 56px 24px;
+        text-align: center;
+    }
+
+    .users-empty__icon {
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #fff0e8 0%, #eef4ff 100%);
+        color: #ff6a3d;
+        font-size: 28px;
+        font-weight: 800;
+    }
+
+    .users-empty h3 {
+        margin-bottom: 8px;
+        color: #172033;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .users-empty p {
+        margin: 0;
+        color: #7b879d;
+    }
+
+    @@media (max-width: 991.98px) {
+        .users-hero,
+        .users-card__header {
+            padding: 24px;
+        }
+
+        .users-toolbar {
+            grid-template-columns: 1fr;
+        }
+
+        .users-search-btn {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .users-page {
+            padding-top: 12px;
+        }
+
+        .users-hero {
+            border-radius: 22px;
+            padding: 20px;
+        }
+
+        .users-card {
+            border-radius: 20px;
+        }
+
+        .users-card__header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .users-table thead th,
+        .users-table tbody td {
+            padding: 14px;
+        }
+    }
+</style>
+
+<section class="users-page">
+    <div class="users-hero">
+        <div class="users-hero__top">
+            <div>
+                <div class="users-badge">Pacific Travel Agency</div>
+                <h1 class="users-title">User Management</h1>
+                <p class="users-subtitle">
+                    Track customer information, update profiles quickly, and search users in a cleaner, more structured interface.
+                </p>
+            </div>
+
+            <a asp-action="Create" class="users-create-btn">
+                <span>+</span>
+                <span>Add User</span>
+            </a>
+        </div>
+
+        <form asp-action="Index" method="get" class="users-toolbar">
+            <div class="users-search">
+                <span class="users-search__icon">⌕</span>
+                <input type="text"
+                       name="searchString"
+                       value="@searchValue"
+                       class="users-search__input"
+                       placeholder="Search by name, email, or phone number..." />
+            </div>
+            <button type="submit" class="users-search-btn">Search</button>
+        </form>
+    </div>
+
+    <div class="users-card">
+        <div class="users-card__header">
+            <div>
+                <h2 class="users-card__title">User List</h2>
+                <p class="users-card__meta">Information is arranged for easier review and faster actions.</p>
+            </div>
+            <div class="users-count">@users.Count users</div>
+        </div>
+
+        @if (users.Any())
+        {
+            <div class="table-responsive">
+                <table class="table users-table">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in users)
+                        {
+                            <tr>
+                                <td class="users-name">@item.FullName</td>
+                                <td>@item.Email</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <div class="users-actions">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="users-action-btn users-action-btn--info">Details</a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="users-action-btn users-action-btn--warning">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="users-action-btn users-action-btn--danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="users-empty">
+                <div class="users-empty__icon">U</div>
+                <h3>No users found</h3>
+                <p>Add a new user or try searching with a different keyword.</p>
+            </div>
+        }
+    </div>
+</section>

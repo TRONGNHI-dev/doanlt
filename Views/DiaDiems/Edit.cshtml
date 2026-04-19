@@ -1,0 +1,140 @@
+@model TravelProject.Models.DiaDiem
+
+@{
+    ViewData["Title"] = "Edit Destination";
+}
+
+<style>
+    .dd-form-page { padding: 24px 0 40px; }
+    .dd-form-hero, .dd-form-card {
+        background: #fff;
+        border-radius: 24px;
+        border: 1px solid #e8edf5;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    }
+    .dd-form-hero {
+        background: linear-gradient(135deg, #fff6ef 0%, #ffffff 55%, #eef4ff 100%);
+        border-color: #f0e4d7;
+        padding: 32px;
+        margin-bottom: 24px;
+    }
+    .dd-badge {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 122, 61, 0.12);
+        color: #d75a1a;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+    .dd-title { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #172033; }
+    .dd-subtitle { margin: 12px 0 0; color: #5f6b85; font-size: 16px; max-width: 680px; }
+    .dd-form-card__header, .dd-form-body { padding: 28px; }
+    .dd-form-card__header { border-bottom: 1px solid #eef2f7; }
+    .dd-form-card__title { margin: 0; font-size: 22px; font-weight: 800; color: #172033; }
+    .dd-form-card__meta { margin: 8px 0 0; color: #7b879d; font-size: 14px; }
+    .dd-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .dd-group { display: flex; flex-direction: column; gap: 8px; }
+    .dd-group--full { grid-column: 1 / -1; }
+    .dd-label { font-size: 14px; font-weight: 700; color: #24324d; }
+    .dd-control {
+        width: 100%;
+        min-height: 54px;
+        border-radius: 16px;
+        border: 1px solid #dbe3f0;
+        padding: 12px 16px;
+        font-size: 15px;
+        color: #172033;
+        background: #fff;
+    }
+    textarea.dd-control { min-height: 120px; resize: vertical; }
+    .field-validation-error, .validation-summary-errors { color: #d14343; font-size: 13px; }
+    .dd-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .dd-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+    .dd-btn--primary { background: linear-gradient(135deg, #ff7a3d 0%, #ff5c35 100%); color: #fff; }
+    .dd-btn--secondary { background: #15213b; color: #fff; }
+    @@media (max-width: 767.98px) { .dd-grid { grid-template-columns: 1fr; } }
+</style>
+
+<section class="dd-form-page">
+    <div class="dd-form-hero">
+        <div class="dd-badge">Pacific Travel Agency</div>
+        <h1 class="dd-title">Edit Destination</h1>
+        <p class="dd-subtitle">Update the selected destination without changing the overall structure of the module.</p>
+    </div>
+
+    <div class="dd-form-card">
+        <div class="dd-form-card__header">
+            <h2 class="dd-form-card__title">Destination Information</h2>
+            <p class="dd-form-card__meta">Review the fields below and save your updates.</p>
+        </div>
+        <div class="dd-form-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="CreatedDate" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+                <div class="dd-grid">
+                    <div class="dd-group">
+                        <label asp-for="TenDiaDiem" class="dd-label"></label>
+                        <input asp-for="TenDiaDiem" class="dd-control" />
+                        <span asp-validation-for="TenDiaDiem" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group">
+                        <label asp-for="KhuVuc" class="dd-label"></label>
+                        <input asp-for="KhuVuc" class="dd-control" />
+                        <span asp-validation-for="KhuVuc" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group">
+                        <label asp-for="LoaiHinh" class="dd-label"></label>
+                        <input asp-for="LoaiHinh" class="dd-control" />
+                        <span asp-validation-for="LoaiHinh" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group">
+                        <label asp-for="DiaChi" class="dd-label"></label>
+                        <input asp-for="DiaChi" class="dd-control" />
+                        <span asp-validation-for="DiaChi" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group">
+                        <label asp-for="HinhAnh" class="dd-label"></label>
+                        <input asp-for="HinhAnh" class="dd-control" />
+                        <span asp-validation-for="HinhAnh" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group">
+                        <label asp-for="LuotXem" class="dd-label"></label>
+                        <input asp-for="LuotXem" class="dd-control" />
+                        <span asp-validation-for="LuotXem" class="field-validation-error"></span>
+                    </div>
+                    <div class="dd-group dd-group--full">
+                        <label asp-for="MoTa" class="dd-label"></label>
+                        <textarea asp-for="MoTa" class="dd-control"></textarea>
+                        <span asp-validation-for="MoTa" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="dd-actions">
+                    <button type="submit" class="dd-btn dd-btn--primary">Save Changes</button>
+                    <a asp-action="Index" class="dd-btn dd-btn--secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

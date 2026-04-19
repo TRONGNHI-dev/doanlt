@@ -1,0 +1,173 @@
+@model TravelProject.Models.User
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<style>
+    .user-delete-page {
+        padding: 24px 0 40px;
+    }
+
+    .user-delete-hero {
+        background: linear-gradient(135deg, #fff3f1 0%, #ffffff 55%, #fff7f5 100%);
+        border: 1px solid #f8d9d2;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        margin-bottom: 24px;
+    }
+
+    .user-delete-badge {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(217, 72, 15, 0.12);
+        color: #c2410c;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .user-delete-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .user-delete-subtitle {
+        margin: 12px 0 0;
+        color: #6b7280;
+        font-size: 16px;
+        max-width: 700px;
+    }
+
+    .user-delete-card {
+        background: #fff;
+        border: 1px solid #f1d8d4;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+
+    .user-delete-summary {
+        padding: 28px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 24px;
+        border-bottom: 1px solid #f4e4e1;
+    }
+
+    .user-delete-item {
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: #fffaf9;
+        border: 1px solid #f8e2dd;
+    }
+
+    .user-delete-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #8b95a7;
+    }
+
+    .user-delete-value {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .user-delete-actions {
+        display: flex;
+        gap: 12px;
+        padding: 24px 28px;
+        flex-wrap: wrap;
+    }
+
+    .user-delete-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+
+    .user-delete-btn--danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: #fff;
+    }
+
+    .user-delete-btn--secondary {
+        background: #15213b;
+        color: #fff;
+    }
+
+    @@media (max-width: 767.98px) {
+        .user-delete-hero,
+        .user-delete-summary,
+        .user-delete-actions {
+            padding: 20px;
+        }
+
+        .user-delete-summary {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="user-delete-page">
+    <div class="user-delete-hero">
+        <div class="user-delete-badge">Danger Zone</div>
+        <h1 class="user-delete-title">Delete User</h1>
+        <p class="user-delete-subtitle">This action removes the selected user from the system. Review the account information carefully before confirming.</p>
+    </div>
+
+    <div class="user-delete-card">
+        <div class="user-delete-summary">
+            <div class="user-delete-item">
+                <span class="user-delete-label">Full Name</span>
+                <p class="user-delete-value">@Model.FullName</p>
+            </div>
+            <div class="user-delete-item">
+                <span class="user-delete-label">Username</span>
+                <p class="user-delete-value">@Model.Username</p>
+            </div>
+            <div class="user-delete-item">
+                <span class="user-delete-label">Email</span>
+                <p class="user-delete-value">@Model.Email</p>
+            </div>
+            <div class="user-delete-item">
+                <span class="user-delete-label">Phone Number</span>
+                <p class="user-delete-value">@Model.PhoneNumber</p>
+            </div>
+            <div class="user-delete-item">
+                <span class="user-delete-label">Role</span>
+                <p class="user-delete-value">@Model.Role</p>
+            </div>
+            <div class="user-delete-item">
+                <span class="user-delete-label">Created Date</span>
+                <p class="user-delete-value">@Model.CreatedAt.ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+
+        <div class="user-delete-actions">
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+                <button type="submit" class="user-delete-btn user-delete-btn--danger">Confirm Delete</button>
+            </form>
+            <a asp-action="Index" class="user-delete-btn user-delete-btn--secondary">Cancel</a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,269 @@
+@using System.Linq
+@model IEnumerable<TravelProject.Models.DiaDiem>
+
+@{
+    ViewData["Title"] = "Destination Management";
+    var destinations = Model?.ToList() ?? new List<TravelProject.Models.DiaDiem>();
+    var searchValue = ViewBag.SearchString as string;
+}
+
+<style>
+    .dest-page { padding: 24px 0 40px; }
+    .dest-hero {
+        position: relative;
+        z-index: 20;
+        isolation: isolate;
+        background: linear-gradient(135deg, #fff6ef 0%, #ffffff 55%, #eef4ff 100%);
+        border: 1px solid #f0e4d7;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        margin-bottom: 24px;
+    }
+    .dest-hero__top {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+    .dest-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 122, 61, 0.12);
+        color: #d75a1a;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+    .dest-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        color: #172033;
+        line-height: 1.1;
+    }
+    .dest-subtitle {
+        margin: 12px 0 0;
+        max-width: 680px;
+        color: #5f6b85;
+        font-size: 16px;
+    }
+    .dest-create-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        border-radius: 16px;
+        padding: 14px 22px;
+        background: linear-gradient(135deg, #ff7a3d 0%, #ff5c35 100%);
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 14px 30px rgba(255, 92, 53, 0.25);
+    }
+    .dest-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+    }
+    .dest-search { position: relative; }
+    .dest-search__icon {
+        position: absolute;
+        top: 50%;
+        left: 18px;
+        transform: translateY(-50%);
+        color: #90a0ba;
+        pointer-events: none;
+    }
+    .dest-search__input {
+        width: 100%;
+        height: 56px;
+        border-radius: 18px;
+        border: 1px solid #dbe3f0;
+        padding: 0 18px 0 52px;
+        font-size: 16px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.92);
+    }
+    .dest-search-btn {
+        min-width: 150px;
+        height: 56px;
+        border: none;
+        border-radius: 18px;
+        background: #15213b;
+        color: #fff;
+        font-weight: 700;
+    }
+    .dest-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+    .dest-card__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        padding: 22px 24px;
+        border-bottom: 1px solid #eef2f7;
+    }
+    .dest-card__title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #172033;
+    }
+    .dest-card__meta {
+        margin: 4px 0 0;
+        color: #7b879d;
+        font-size: 14px;
+    }
+    .dest-count {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: #f5f8fc;
+        color: #24324d;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .dest-table { margin: 0; vertical-align: middle; }
+    .dest-table thead th {
+        padding: 18px 20px;
+        background: #f8fafc;
+        color: #24324d;
+        font-size: 14px;
+        font-weight: 800;
+        border-bottom: 1px solid #e8edf5;
+        white-space: nowrap;
+    }
+    .dest-table tbody td {
+        padding: 18px 20px;
+        color: #3d4a63;
+        border-color: #eef2f7;
+    }
+    .dest-table tbody tr:hover { background: #fcfdff; }
+    .dest-name { font-weight: 700; color: #172033; }
+    .dest-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .dest-btn {
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+    }
+    .dest-btn--info { background: #eaf4ff; color: #1d5fbf; }
+    .dest-btn--warning { background: #fff5dd; color: #9a6700; }
+    .dest-btn--danger { background: #ffe7e5; color: #c0392b; }
+    .dest-empty { padding: 56px 24px; text-align: center; }
+    .dest-empty__icon {
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #fff0e8 0%, #eef4ff 100%);
+        color: #ff6a3d;
+        font-size: 28px;
+        font-weight: 800;
+    }
+    @@media (max-width: 991.98px) {
+        .dest-toolbar { grid-template-columns: 1fr; }
+        .dest-search-btn { width: 100%; }
+    }
+</style>
+
+<section class="dest-page">
+    <div class="dest-hero">
+        <div class="dest-hero__top">
+            <div>
+                <div class="dest-badge">Pacific Travel Agency</div>
+                <h1 class="dest-title">Destination Management</h1>
+                <p class="dest-subtitle">Manage destination information, descriptions, categories, images, and visitor counts in one place.</p>
+            </div>
+            <a asp-action="Create" class="dest-create-btn">
+                <span>+</span>
+                <span>Add Destination</span>
+            </a>
+        </div>
+
+        <form asp-action="Index" method="get" class="dest-toolbar">
+            <div class="dest-search">
+                <span class="dest-search__icon">⌕</span>
+                <input type="text" name="searchString" value="@searchValue" class="dest-search__input" placeholder="Search by name, address, region, or category..." />
+            </div>
+            <button type="submit" class="dest-search-btn">Search</button>
+        </form>
+    </div>
+
+    <div class="dest-card">
+        <div class="dest-card__header">
+            <div>
+                <h2 class="dest-card__title">Destination List</h2>
+                <p class="dest-card__meta">Review destination records and manage updates quickly.</p>
+            </div>
+            <div class="dest-count">@destinations.Count destinations</div>
+        </div>
+
+        @if (destinations.Any())
+        {
+            <div class="table-responsive">
+                <table class="table dest-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Region</th>
+                            <th>Category</th>
+                            <th>Address</th>
+                            <th>Views</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in destinations)
+                        {
+                            <tr>
+                                <td class="dest-name">@item.TenDiaDiem</td>
+                                <td>@item.KhuVuc</td>
+                                <td>@item.LoaiHinh</td>
+                                <td>@item.DiaChi</td>
+                                <td>@item.LuotXem</td>
+                                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <div class="dest-actions">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="dest-btn dest-btn--info">Details</a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="dest-btn dest-btn--warning">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="dest-btn dest-btn--danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="dest-empty">
+                <div class="dest-empty__icon">D</div>
+                <h3>No destinations found</h3>
+                <p>Add a destination or try another search keyword.</p>
+            </div>
+        }
+    </div>
+</section>
